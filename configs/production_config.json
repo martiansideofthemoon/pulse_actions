@@ -1,5 +1,5 @@
 {
-    "applabel": "['resultset_actions', 'manual_backfill', 'runnable']",
+    "applabel": "['resultset_actions', 'manual_backfill', 'runnable', 'talos-jobs']",
     "durable": "true",
     "sources": {
         "resultset_actions": {
@@ -13,6 +13,10 @@
         "runnable": {
             "exchange": "exchange/treeherder/v1/resultset-runnable-job-actions",
             "topic": "#"
+        },
+        "talos-jobs": {
+            "exchange": "exchange/build/normalized",
+            "topic": "talos.#.#"
         }
     }
 }

@@ -9,6 +9,7 @@ from timeit import default_timer
 import pulse_actions.handlers.treeherder_buildbot as treeherder_buildbot
 import pulse_actions.handlers.treeherder_resultset as treeherder_resultset
 import pulse_actions.handlers.treeherder_runnable as treeherder_runnable
+import pulse_actions.handlers.talos as talos
 
 from pulse_actions.utils.log_util import setup_logging
 
@@ -41,6 +42,7 @@ def main():
 
 
 def route(data, message, dry_run):
+    print data
     if 'job_id' in data:
         treeherder_buildbot.on_buildbot_event(data, message, dry_run)
     elif 'buildernames' in data:
