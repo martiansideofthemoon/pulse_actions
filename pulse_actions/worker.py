@@ -43,12 +43,15 @@ def main():
 
 def route(data, message, dry_run):
     print data
+    print data['_meta']['exchange']
     if 'job_id' in data:
         treeherder_buildbot.on_buildbot_event(data, message, dry_run)
     elif 'buildernames' in data:
         treeherder_runnable.on_runnable_job_prod_event(data, message, dry_run)
     elif 'resultset_id' in data:
         treeherder_resultset.on_resultset_action_event(data, message, dry_run)
+    elif data['_meta']['exchange'] == 'exchange/build/normalized':
+        talos.on_event(data, message, dry_run)
     else:
         LOG.error("Exchange not supported by router (%s)." % data)
 
