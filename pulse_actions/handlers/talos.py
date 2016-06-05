@@ -8,6 +8,7 @@ This module is for the following use case:
 import logging
 
 from mozci import query_jobs
+from mozci.errors import MissingBuilderError
 from mozci.mozci import trigger_talos_jobs_for_build
 from mozci.platforms import get_buildername_metadata
 from mozci.sources import buildjson
@@ -30,7 +31,7 @@ def on_event(data, message, dry_run):
     buildername = payload["buildername"]
     try:
         info = get_buildername_metadata(buildername)
-    except MozciError:
+    except MissingBuilderError:
         return
     revision = payload["revision"]
 
