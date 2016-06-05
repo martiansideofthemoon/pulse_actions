@@ -28,7 +28,10 @@ def on_event(data, message, dry_run):
     payload = data["payload"]
     status = payload["status"]
     buildername = payload["buildername"]
-    info = get_buildername_metadata(buildername)
+    try:
+        info = get_buildername_metadata(buildername)
+    except MozciError:
+        return
     revision = payload["revision"]
 
     if info['build_type'] == "pgo" and \
