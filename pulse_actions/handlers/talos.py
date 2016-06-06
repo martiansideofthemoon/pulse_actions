@@ -31,7 +31,12 @@ def on_event(data, message, dry_run):
     buildername = payload["buildername"]
     try:
         info = get_buildername_metadata(buildername)
-    except MissingBuilderError:
+    except MissingBuilderError, e:
+        LOG.warning(str(e))
+        if not dry_run:
+            # We need to ack the message to remove it from our queue
+            message.ack()
+
         return
     revision = payload["revision"]
 
