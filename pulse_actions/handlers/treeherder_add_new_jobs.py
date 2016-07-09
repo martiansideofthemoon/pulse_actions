@@ -9,7 +9,7 @@ from pulse_actions.utils.misc import (
 from mozci import TaskClusterBuildbotManager, query_jobs
 from mozci.mozci import trigger_job
 from mozci.sources import buildjson, buildbot_bridge
-from mozci.taskcluster import schedule_action_task
+from mozci.taskcluster import TaskClusterManager
 from thclient import TreeherderClient
 
 LOG = logging.getLogger(__name__)
@@ -80,8 +80,9 @@ def on_event(data, message, dry_run, treeherder_host, acknowledge, **kwargs):
     # Make sure that decision task id is not null and task_labels are there to schedule
     if task_labels and len(decision_task_id):
         try:
-            schedule_action_task(decision_task_id=decision_task_id,
-                                 task_labels=task_labels)
+            mgr = TaskClusterManager(dry_run=dry_run)
+            mgr.schedule_action_task(decision_task_id=decision_task_id,
+                                     task_labels=task_labels)
         except Exception, e:
             LOG.warning(str(e))
             raise
